@@ -1244,6 +1244,7 @@ SUB get_reload_tasks
             "appId",
             "startDateTime",
             "state",
+            "disabledCode",
             "timeZone",
             "nextExecutionTime",
             "lastExecutionTime",
@@ -1298,6 +1299,7 @@ SUB get_reload_tasks
       ApplyMap('Map_AppOwner_UserName',ApplyMap('Map_AppID_UserID',appId,'[Deleted]'),'[Deleted]') AS ReloadTaskOwnerName,
       Date(TimeStamp(TimeStamp([startDateTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskStartDateTime,
       [state] AS ReloadTaskState,
+      disabledCode as ReloadTaskDisabledCode,
       [timeZone] AS ReloadTaskTimeZone,
       Date(TimeStamp(TimeStamp([nextExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskNextExecutionTime,
       Date(TimeStamp(TimeStamp([lastExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskLastExecutionTime,
@@ -1507,7 +1509,7 @@ SUB get_tasks
     //         	[spaceId],
     //         	[tenantId],
     //         	[updatedAt],
-    //         	[disabledCode],
+                [disabledCode] as ReloadTaskDisabledCode,
                 [__KEY_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_metadata],
                 [__FK_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
             RESIDENT RestConnectorMasterTable
@@ -1987,6 +1989,7 @@ SUB get_tasks
             ReloadTaskType,
             ReloadTaskStartDateTime,
             ReloadTaskState,
+            ReloadTaskDisabledCode,
             ReloadTaskTimeZone,
             ReloadTaskNextExecutionTime,
             ReloadTaskLastExecutionTime,
